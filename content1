@@ -1,0 +1,23 @@
+import tkinter as tk
+root = tk.Tk()
+root.title("DeepFakeDetector Version")
+root.geometry("1440x920")
+root.resizable(False, False)
+
+
+background = tk.Frame(root, width=1440, height=920, bg="lightgrey")
+background.grid(row=0, column=0)
+
+Bg = Image.open("ImageRessource\Background.jpg")
+Bg = Bg.resize((1440, 920)) 
+Bg = ImageTk.PhotoImage(Bg)
+
+LabelImageFrame = tk.Label(background, image=Bg)
+LabelImageFrame.place(x=0, y=0)
+
+
+menu = tk.Frame(background, width=1320, height=800, bg='white')
+menu.grid(row=0, column=0)
+menu.place(x=60, y=60)
+
+
