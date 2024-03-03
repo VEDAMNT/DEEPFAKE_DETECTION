@@ -1,0 +1,25 @@
+def Analyze(FilePathTest):
+    
+    if FilePathTest == "":
+        
+        LabelReturn.config(text = "PLEASE SELECT AN IMAGE FOR ANALYSIS.", fg = "Red" )
+        
+    else:
+            
+        print(FilePathTest)
+        global ImgToAnalys 
+        ImgToAnalys = Image.open(FilePathTest)
+    
+        ImgToAnalys = ImgToAnalys.resize((200, 200))
+        ImgToAnalysArray = np.array(ImgToAnalys)
+        ImgToAnalysArray = np.expand_dims(ImgToAnalysArray, axis=0)
+        predictions = model.predict(ImgToAnalysArray)
+        Rates = predictions[0]
+    
+        RateFake = Rates[0]
+        RateReal = Rates[1]
+    
+        print(RateFake)
+        print(RateReal)
+    
+        ResultAnalys(RateFake, RateReal)
