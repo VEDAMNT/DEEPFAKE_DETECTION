@@ -23,3 +23,9 @@ def Analyze(FilePathTest):
         print(RateReal)
     
         ResultAnalys(RateFake, RateReal)
+
+
+def ResultAnalys(RateFake, RateReal):
+    if RateFake < RateReal :
+        TrueRate = round(100*RateReal)
+        LabelReturn.config(text = "IMAGE REAL " + str(TrueRate) + " %." , fg = "Green" )
