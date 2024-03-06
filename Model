@@ -1,0 +1,83 @@
+import pathlib
+import tensorflow as tf
+from tensorflow.keras import layers
+
+data_dir_train= pathlib.Path('DataSet/Train')
+data_dir_valid= pathlib.Path('DataSet/Validation')
+data_dir_test = pathlib.Path('DataSet/Test')
+
+batch_size = 30
+img_height = 200
+img_width = 200
+
+train_data = tf.keras.preprocessing.image_dataset_from_directory(
+  data_dir_train,
+  validation_split=0.2,
+  subset="training",
+  seed=42,
+  image_size=(img_height, img_width),
+  batch_size=batch_size,
+  )
+
+val_data = tf.keras.preprocessing.image_dataset_from_directory(
+  data_dir_valid,
+  validation_split=0.2,
+  subset="validation",
+  seed=42,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
+
+
+test_data = tf.keras.preprocessing.image_dataset_from_directory(
+  data_dir_test,
+  image_size=(img_height, img_width),
+  batch_size=batch_size,
+)
+class_names = val_data.class_names
+print(class_names)
+num_classes = 2
+
+model = tf.keras.Sequential([
+                             #This layer allows you to render RGB values ​​(0-255) in values ​​between 0 and 1
+                             layers.experimental.preprocessing.Rescaling(1./255), 
+
+                             # We chain together convolution and pooling layers which make it possible to reduce
+                             # Size and condense the information to be easily interpretable
+                             # Here we have 4 layers, reducing the image resolution by 2 each time
+                             layers.Conv2D(128, 4, activation = 'relu'),
+                             layers.MaxPooling2D(),
+                             layers.Conv2D(64, 4, activation = 'relu'),
+                             layers.MaxPooling2D(),
+                             layers.Conv2D(32, 4, activation = 'relu'),
+                             layers.MaxPooling2D(),
+                             layers.Conv2D(16, 4, activation = 'relu'),
+                             layers.MaxPooling2D(),
+                             
+                            # Allows you to flatten the image onto a single dimension that can be interpreted subsequently
+                             layers.Flatten(),
+                             
+                             # Here is the dense layer made up of 64 neurons
+                             layers.Dense(64, activation = 'relu'),
+                             
+                             #here data will be interpreted to determine the outcome 
+                             layers.Dense(num_classes, activation = 'softmax')
+    ])
+
+model.compile(optimizer='adam', loss=tf.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])
+logdir="logs"
+
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, histogram_freq=1, write_images=logdir, embeddings_data=train_data)
+
+model.fit(
+    train_data,
+    validation_data=val_data,
+    epochs=10,
+    callbacks=[tensorboard_callback
+    ])
+
+model.summary()
+model.save("Model10Epochs30batch.h5")
+test_loss, test_acc = model.evaluate(test_data)
+print('Test Loss: {}'.format(test_loss))
+print('Test Accuracy: {}'.format(test_acc))
+
