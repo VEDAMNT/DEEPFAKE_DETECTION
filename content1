@@ -45,5 +45,11 @@ ButtonAnalyseTest.place(x = 50, y = 726)
 LabelReturn=tk.Label(menu,text ="",font=("Arial",31), bg="white")
 LabelReturn.place(x = 50,y = 600)
 
-
+def UpdateImage(FilePathTest):
+    global tk_ImgToAnalys
+    ImgToAnalys = Image.open(FilePathTest)
+    ImgToAnalys = ImgToAnalys.resize((600, 600)) 
+    tk_ImgToAnalys = ImageTk.PhotoImage(ImgToAnalys)
+    LabelImageFrame.config(image=tk_ImgToAnalys)
+    LabelImageFrame.image = tk_ImgToAnalys  # IMAGE
 
