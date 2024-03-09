@@ -2,9 +2,9 @@ import pathlib
 import tensorflow as tf
 from tensorflow.keras import layers
 
-data_dir_train= pathlib.Path('DataSet/Train')
-data_dir_valid= pathlib.Path('DataSet/Validation')
-data_dir_test = pathlib.Path('DataSet/Test')
+data_dir_train= pathlib.Path('Dataset/Train')
+data_dir_valid= pathlib.Path('Dataset/Validation')
+data_dir_test = pathlib.Path('Dataset/Test')
 
 batch_size = 30
 img_height = 200
