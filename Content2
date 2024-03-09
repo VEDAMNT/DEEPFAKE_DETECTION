@@ -29,3 +29,11 @@ def ResultAnalys(RateFake, RateReal):
     if RateFake < RateReal :
         TrueRate = round(100*RateReal)
         LabelReturn.config(text = "IMAGE REAL " + str(TrueRate) + " %." , fg = "Green" )
+
+def UpdateImage(FilePathTest):
+    global tk_ImgToAnalys
+    ImgToAnalys = Image.open(FilePathTest)
+    ImgToAnalys = ImgToAnalys.resize((600, 600)) 
+    tk_ImgToAnalys = ImageTk.PhotoImage(ImgToAnalys)
+    LabelImageFrame.config(image=tk_ImgToAnalys)
+    LabelImageFrame.image = tk_ImgToAnalys  # IMAGE
