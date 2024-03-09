@@ -29,6 +29,10 @@ def ResultAnalys(RateFake, RateReal):
     if RateFake < RateReal :
         TrueRate = round(100*RateReal)
         LabelReturn.config(text = "IMAGE REAL " + str(TrueRate) + " %." , fg = "Green" )
+    else :
+        TrueRate = round(100*RateFake)
+        LabelReturn.config(text = "IMAGE FAKE " + str(TrueRate) + " %.", fg = "Red" )
+
 
 def UpdateImage(FilePathTest):
     global tk_ImgToAnalys
