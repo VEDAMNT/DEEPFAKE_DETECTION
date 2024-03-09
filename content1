@@ -44,5 +44,12 @@ ButtonAnalyseTest.place(x = 50, y = 726)
 
 LabelReturn=tk.Label(menu,text ="",font=("Arial",31), bg="white")
 LabelReturn.place(x = 50,y = 600)
+ImageFrame = Image.open("ImageRessource\ImageCadre.jpg")
+ImageFrame = ImageFrame.resize((600, 600)) 
+tk_ImageFrame = ImageTk.PhotoImage(ImageFrame)
+LabelImageFrame = tk.Label(menu, image=tk_ImageFrame)
+
+LabelImageFrame.place(x=640, y= 100)
+
 
 
