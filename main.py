@@ -15,6 +15,45 @@ def OpenFilePathTest():
     if FilePathTest != "":
         UpdateImage(FilePathTest)
 
+def Analyze(FilePathTest):
+    if FilePathTest == "":
+        LabelReturn.config(text = "PLEASE SELECT AN IMAGE FOR ANALYSIS.", fg = "Red" )
+    else:  
+        print(FilePathTest)
+        global ImgToAnalys 
+        ImgToAnalys = Image.open(FilePathTest)
+    
+        ImgToAnalys = ImgToAnalys.resize((200, 200))
+        ImgToAnalysArray = np.array(ImgToAnalys)
+        ImgToAnalysArray = np.expand_dims(ImgToAnalysArray, axis=0)
+        predictions = model.predict(ImgToAnalysArray)
+        Rates = predictions[0]
+    
+        RateFake = Rates[0]
+        RateReal = Rates[1]
+    
+        print(RateFake)
+        print(RateReal)
+    
+        ResultAnalys(RateFake, RateReal)
+
+
+def ResultAnalys(RateFake, RateReal):
+    if RateFake < RateReal :
+        TrueRate = round(100*RateReal)
+        LabelReturn.config(text = "IMAGE REAL " + str(TrueRate) + " %." , fg = "Green" )
+    else :
+        TrueRate = round(100*RateFake)
+        LabelReturn.config(text = "IMAGE FAKE " + str(TrueRate) + " %.", fg = "Red" )
+
+
+def UpdateImage(FilePathTest):
+    global tk_ImgToAnalys
+    ImgToAnalys = Image.open(FilePathTest)
+    ImgToAnalys = ImgToAnalys.resize((600, 600)) 
+    tk_ImgToAnalys = ImageTk.PhotoImage(ImgToAnalys)
+    LabelImageFrame.config(image=tk_ImgToAnalys)
+    LabelImageFrame.image = tk_ImgToAnalys  # IMAGE
 
 root = tk.Tk()
 root.title("DeepFakeDetector Version")
@@ -65,7 +104,7 @@ ImageFrame = Image.open("ImageRessource\ImageCadre.jpg")
 ImageFrame = ImageFrame.resize((600, 600)) 
 tk_ImageFrame = ImageTk.PhotoImage(ImageFrame)
 LabelImageFrame = tk.Label(menu, image=tk_ImageFrame)
-
 LabelImageFrame.place(x=640, y= 100)
 
+root.mainloop()
 
